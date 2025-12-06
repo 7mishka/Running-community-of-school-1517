@@ -1,0 +1,74 @@
+    <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Мой Сайт</title>
+    <link rel="stylesheet" href="registr.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>Мой Сайт</h1>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="registration-container">
+        <div class="registration-form">
+            <h2>Создать аккаунт</h2>
+            <p class="form-subtitle">Присоединяйтесь к нашему сообществу</p>
+            
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="username"> Имя пользователя: </label>
+                    <input type="text" id="username" name="username" required>
+                    <span class="error-message" id="usernameError"></span>
+                    <label for="email"> Адрес электронной почты: </label>
+                    <input type="text" id="email" name="email" required>
+                    <span class="error-message" id="usernameError"></span>
+                    <label for="classs"> Класс: </label>
+                    <input type="text" id="classs" name="classs" required>
+                    <span class="error-message" id="usernameError"></span>
+                    <label for="corpus"> Корпус школы:</label>
+                    <input type="text" id="corpus" name="corpus" required>
+                    <span class="error-message" id="usernameError"></span>
+                    <label for="age"> Возраст:</label>
+                    <input type="text" id="age" name="age" required>
+                    <span class="error-message" id="usernameError"></span>
+                    <label for="gender"> Пол:</label>
+                    <div class="gender-options">
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="male" required>
+                            <span class="gender-label">Мужской</span>
+                        </label>
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="female" required>
+                            <span class="gender-label">Женский</span>
+                        </label>
+                    </div>
+                    <span class="error-message" id="usernameError"></span>
+                    <label for="password"> Пароль: </label>
+                    <input type="text" id="password" name="password" required>
+                    <span class="error-message" id="usernameError"></span>
+                </div>
+                
+                
+                <button type="submit" class="register-button" id="registerButton">
+                    <span class="button-text">Создать аккаунт</span>
+                    <div class="loading-spinner" style="display: none;"></div>
+                </button>
+                
+                <div class="login-redirect">
+                    Уже есть аккаунт? <a href="login.html">Войдите</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="registr.js"></script>
+</body>
+</html>

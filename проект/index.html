@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Беговое сообщество школы 1517</title>
+</head>
+
+<body>
+    <header>
+        <div class="slogan"> <h3>run slow, run fast, run with friends - just run</h3> </div>
+        <p> <div class="name">  <h1> Беговое сообщество школы 1517 </h1> </div> </p>
+        
+
+        <div id="userWelcome" style="display: none; text-align: center; margin: 15px 0; padding: 10px; background: rgba(0,0,0,0.1); border-radius: 5px;">
+            <span id="welcomeText" style="font-size: 18px; font-weight: bold;"></span>
+            <button id="logoutBtn" style="margin-left: 15px; padding: 8px 15px; background: #ff6b6b; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Выйти</button>
+        </div>
+        
+        <div class="colbasa">
+            <div class="description"> <p> Наш сайт охватывает все здания нашей школы и помогает найти товарищей по спорту, в моём случае по бегу. Здесь вы сможете не только тренироваться и улучшать вашу физическую подготовку, а еще найти друзей в этом виде спорта, с которыми вам будет интересно проводить время. На этом сайте вы сможете подобрать уровень вашей подготовки, после регистрации </div> </p> 
+            <div id="calendar-container" style="margin: 30px auto; max-width: 300px;"> 
+                <div class="calendar-header">
+                    <button id="prevMonthBtn" aria-label="Предыдущий месяц">←</button>
+                    <span id="currentMonthYear"></span>
+                    <button id="nextMonthBtn" aria-label="Следующий месяц">→</button>
+                </div>
+        
+                <div class="calendar-weekdays">
+                    <span>Пн</span>
+                    <span>Вт</span>
+                    <span>Ср</span>
+                    <span>Чт</span>
+                    <span>Пт</span>
+                    <span>Сб</span>
+                    <span>Вс</span>
+                </div>
+        
+                <div class="calendar-days" id="calendarDays">
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section class="section0">
+        <div class="container0">
+            <button id="sign_in" class="login">  <h2> Войти </h2> </button>
+            <button id="sign_up" class="login"> <h2> Зарегистрироваться </h2> </button>
+        </div>
+    </section>
+        
+    <section>
+        <div class="classification"> <h1> Уровни бега</h1> </div>
+        <div class="container4">
+            <div class="field"> <h4> Начальный(легкий)</h4> Темп бега выше 5:45 км/мин</div>
+            <div class="field"> <h4> Умеренный(средний)</h4> Темп бега ниже 5:45, но не больше 4:50 км/мин</div>
+            <div class="field"> <h4> Продвинутый(сложный) </h4> Темп бега быстрее 4:45 км/мин</div>
+        </div>
+    </section>
+    
+    <section>
+        <p> <div class="level"> <h2> Начальный уровень </h2> </div> </p>
+        <p> <div class="regularity"> <h3> Пробежки проходят 3 раза в неделю
+                                    </br> Понедельник Среда Воскресенье </h3> </div> </p>
+        <div class="container1">  
+            <div class="field1"> <strong>Понедельник </strong>
+                                    </br> Сбор 8 утра 
+                                    </br> Начало 8:15 
+                                    </br> Дистанция 5 км 
+                                    </br> Темп 6:00 км/мин 
+                                    </br> <button class="joining-button"; id="Monday"> <h3> Записаться </h3> </button> 
+            </div>
+            <div class="field1"> <strong> Среда </strong> 
+                                </br> Cбор 15:55 
+                                </br> Начало 16:10 
+                                </br> Дистанция 8 км 
+                                </br>Темп 5:45 км/мин 
+                                </br><button class="joining-button"; id="Wednesday"> <h3> Записаться </h3> </button>
+            </div>
+            <div class="field1"> <strong> Воскресенье </strong> 
+                                    </br> Cбор 19:00 
+                                    </br> Начало 19:15 
+                                    </br> Дистанция 10 км 
+                                    </br> Темп 4:55 км/мин 
+                                    </br><button class="joining-button"; id="Sunday"> <h3> Записаться </h3> </button>
+                                    
+            </div>
+        </div>
+    </section>
+    
+    <section>
+        <p> <div class="level2"> <h2> Средний уровень </h2> </div> </p>
+        <p> <div class="regularity2"> <h3> Пробежки проходят 3 раза в неделю
+                                    </br> Вторник Четверг Суббота </h3> </div> </p>
+        <div class="container2">
+            <div class="field2"> <strong> Вторник </strong> 
+                                    </br> Сбор в 11:30 
+                                    </br> Начало 11:45 
+                                    </br> Дистанция 7 км 
+                                    </br> Темп 5:30 км/мин 
+                                    </br><button class="joining-button"; id="Tuesday"> <h3> Записаться </h3> </button>
+            </div>
+            <div class="field2"> <strong> Четверг </strong> 
+                                    </br> Сбор в 14:15 
+                                    </br> Начало 14:30 
+                                    </br> Дистанция 9 км 
+                                    </br> Темп 5:00 км/мин 
+                                    </br><button class="joining-button"; id="Thursday"> <h3> Записаться </h3> </button>
+            </div>
+            <div class="field2"> <strong> Суббота </strong> 
+                                    </br> Сбор в 6:15 
+                                    </br> Начало 6:30 
+                                    </br> Дистанция 12 км 
+                                    </br> Темп 5:15 км/мин 
+                                    </br><button class="joining-button"; id="Saturday"> <h3> Записаться </h3> </button>
+            </div>
+        </div>
+    </section>
+    
+    <section>
+        <p> <div class="level3"> <h2> Продвинутый уровень </h2> </div> </p>
+        <p> <div class="regularity3"> <h3> Пробежки проходят 3 раза в неделю 
+                                    </br> Понедельник Пятница Воскресенье </h3> </div> </p>
+        <div class="container3">
+            <div class="field3"> <strong> Понедельник </strong>
+                                    </br> Сбор 7:15 утра 
+                                    </br> Начало 7:30 
+                                    </br> Дистанция 7 км 
+                                    </br> Темп 3:45 км/мин 
+                                    </br><button class="joining-button"; id="Monday1"> <h3> Записаться </h3> </button>
+            </div>
+            <div class="field3"> <strong> Пятница </strong>
+                                    </br> Сбор 18:00 
+                                    </br> Начало 18:15 
+                                    </br> Дистанция 15 км 
+                                    </br> Темп 4:30 км/мин 
+                                    </br><button class="joining-button"; id="Friday"> <h3> Записаться </h3> </button>
+            </div>
+            <div class="field3"> <strong> Воскресенье </strong> 
+                                    </br> Сбор 13:20  
+                                    </br> Начало 13:35 
+                                    </br> Дистанция 21,1 км 
+                                    </br> Темп 4:45 км/мин 
+                                    </br><button class="joining-button"; id="Sunday1"> <h3> Записаться </h3> </button>
+            </div>
+        </div>
+    </section>
+    
+    <script src="script.js"></script>
+
+</body>
+</html>
+
