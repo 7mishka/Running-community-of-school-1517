@@ -1,7 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     const registrationForm = document.getElementById('registrationForm');
     const registerButton = document.getElementById('registerButton')
-    registrationForm.addEventListener('submit', function(e) {
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1uNfoh_K_zl-8BpJQ6mXcx7tknFbqtiys5wdDcnO36PFavSS7xD04QOdB1uStU_i_/exec'
+    const CONFIG = {
+        SHEET_ID: '1FIHHF7z2DmoGozJVGK4zolO4Og0eTkMQiR4nOEKuTwI',
+        API_KEY: 'AQ.Ab8RN6Ip_f0vr-dvuSJ4i2BJY3F1OkP6bkTeQ0GMkujlBALHVQ',
+        SHEET_NAME: 'Sheet1'
+    }
+    registrationForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
     const grade=document.getElementById('classs').value;
@@ -26,35 +32,87 @@ document.addEventListener('DOMContentLoaded', function() {
             password: document.getElementById('password').value,
             timestamp: new Date().toISOString()
         };
-            saveUserData(formData);
-        
-        alert('Регистрация успешна! Данные сохранены');
 
-        registrationForm.reset();
 
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 2000);
-        
+        try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(` ! Ваш ID: ${result.id}`, 'success');
+                    
+                    document.getElementById('registrationForm').reset();
+                    
+                } else {
+                    throw new Error(result.error || 'Ошибка сервера');
+                }
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showMessage(`Ошибка: ${error.message}`, 'error');
+            }
+
+
+
     });
     
-    function saveUserData(userData) {
+     function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = `message ${type}`;
+            messageEl.style.display = 'block';
+            
+            if (type !== 'success') {
+                setTimeout(() => {
+                    messageEl.style.display = 'none';
+                }, 5000);
+            }
+        }
 
-        let users = JSON.parse(localStorage.getItem('users') || '[]');
+
+
+    async function saveToGoogleSheets(data) {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${CONFIG.SHEET_NAME}!A:I:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS&key=${CONFIG.API_KEY}`;
         
+        const values = [
+            [
+                data.id,
+                data.name,
+                data.email,
+                data.grade,
+                data.schoolBuilding,
+                data.age,
+                data.gender,
+                data.password,
+                data.timestamp,
+            ]
+        ];
 
-        users.push(userData);
+        const requestBody = {
+            values: values
+        };
 
-        localStorage.setItem('users', JSON.stringify(users));
-        
-        let loginUsers = JSON.parse(localStorage.getItem('users') || '[]');
-        loginUsers.push({
-            email: userData.email,
-            username: userData.name.toLowerCase().replace(/\s+/g, ''),
-            password: userData.password
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody)
         });
-        
-        console.log('Данные пользователя сохранены:', userData);
-        console.log('Все пользователи:', users);
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error?.message || 'Ошибка записи в таблицу');
+        }
+
+        return true;
     }
+
 });
