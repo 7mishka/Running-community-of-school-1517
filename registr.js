@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const registrationForm = document.getElementById('registrationForm');
     const registerButton = document.getElementById('registerButton')
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1uNfoh_K_zl-8BpJQ6mXcx7tknFbqtiys5wdDcnO36PFavSS7xD04QOdB1uStU_i_/exec'
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxnAPcuY5l5HtLjx_DUSC6a56fjEhgl9FLBVp2RhD_W5jlwVuJtptTExWqfz3ti1ib/exec'
     const CONFIG = {
         SHEET_ID: '1FIHHF7z2DmoGozJVGK4zolO4Og0eTkMQiR4nOEKuTwI',
         API_KEY: 'AQ.Ab8RN6Ip_f0vr-dvuSJ4i2BJY3F1OkP6bkTeQ0GMkujlBALHVQ',
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
                 
                 if (result.success) {
-                    showMessage(` ! Ваш ID: ${result.id}`, 'success');
+                    alert(` Регистрация успешна!`);
                     
                     document.getElementById('registrationForm').reset();
                     
