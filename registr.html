@@ -6,6 +6,31 @@
     <title>Регистрация - Мой Сайт</title>
     <link rel="stylesheet" href="registr.css">
 </head>
+
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyAxm3uPecNMygSLocnpRuUTGZI8L85bX0I",
+  authDomain: "running-club-1517.firebaseapp.com",
+  projectId: "running-club-1517",
+  storageBucket: "running-club-1517.firebasestorage.app",
+  messagingSenderId: "866925654724",
+  appId: "1:866925654724:web:383fa9ca2e585339ad0f91"
+};
+  firebase.initializeApp(firebaseConfig);
+
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
+
+
+
 <body>
     <header>
         <nav class="navbar">
