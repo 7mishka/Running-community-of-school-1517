@@ -1,118 +1,112 @@
-document.addEventListener('DOMContentLoaded', function() {
+// В файле register.js или в <script> на странице регистрации
+document.addEventListener('DOMContentLoaded', async function() {
     const registrationForm = document.getElementById('registrationForm');
-    const registerButton = document.getElementById('registerButton')
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxnAPcuY5l5HtLjx_DUSC6a56fjEhgl9FLBVp2RhD_W5jlwVuJtptTExWqfz3ti1ib/exec'
-    const CONFIG = {
-        SHEET_ID: '1FIHHF7z2DmoGozJVGK4zolO4Og0eTkMQiR4nOEKuTwI',
-        API_KEY: 'AQ.Ab8RN6Ip_f0vr-dvuSJ4i2BJY3F1OkP6bkTeQ0GMkujlBALHVQ',
-        SHEET_NAME: 'Sheet1'
-    }
+    const registerButton = document.getElementById('registerButton');
+    
+    // Инициализируем базу данных
+    await database.init();
+
     registrationForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-    const grade=document.getElementById('classs').value;
-    if (grade <8 || grade >11) {
-        alert('Невозможна регистрация с таким классом');
-        return;
-    }
-    
-    const age=document.getElementById('age').value;
-    if (age <13 || age >18 ) {
-        alert('Невозможна регистрация с таким возрастом');
-        return;
-    }
+        // Блокируем кнопку
+        if (registerButton) {
+            registerButton.disabled = true;
+            registerButton.textContent = 'Регистрация...';
+        }
+        
+        const grade = document.getElementById('classs').value;
+        if (grade < 8 || grade > 11) {
+            alert('Невозможна регистрация с таким классом');
+            resetButton();
+            return;
+        }
+        
+        const age = document.getElementById('age').value;
+        if (age < 13 || age > 18) {
+            alert('Невозможна регистрация с таким возрастом');
+            resetButton();
+            return;
+        }
+        
+        // Получаем данные формы
         const formData = {
             id: Date.now() + Math.random().toString(36).substr(2, 9),
-            name: document.getElementById('username').value,
-            email: document.getElementById('email').value,
-            grade:grade,
+            name: document.getElementById('username').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            grade: grade,
             schoolBuilding: document.getElementById('corpus').value,
-            age: document.getElementById('age').value,
+            age: parseInt(age),
             gender: document.querySelector('input[name="gender"]:checked')?.value,
             password: document.getElementById('password').value,
             timestamp: new Date().toISOString()
         };
 
+        // Валидация
+        if (!formData.name || !formData.email || !formData.password) {
+            alert('Заполните все обязательные поля');
+            resetButton();
+            return;
+        }
+
+        if (formData.password.length < 6) {
+            alert('Пароль должен содержать минимум 6 символов');
+            resetButton();
+            return;
+        }
 
         try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    alert(` Регистрация успешна!`);
-                    
-                    document.getElementById('registrationForm').reset();
-                    
-                } else {
-                    throw new Error(result.error || 'Ошибка сервера');
-                }
-                
-            } catch (error) {
-                console.error('Ошибка:', error);
-                showMessage(`Ошибка: ${error.message}`, 'error');
-            }
-
-
-
-    });
-    
-     function showMessage(text, type) {
-            const messageEl = document.getElementById('message');
-            messageEl.textContent = text;
-            messageEl.className = `message ${type}`;
-            messageEl.style.display = 'block';
+            // Добавляем пользователя в базу
+            await database.addUser(formData);
             
-            if (type !== 'success') {
-                setTimeout(() => {
-                    messageEl.style.display = 'none';
-                }, 5000);
-            }
+            // Также сохраняем для входа в localStorage (опционально)
+            let loginUsers = JSON.parse(localStorage.getItem('loginUsers') || '[]');
+            loginUsers.push({
+                email: formData.email,
+                username: formData.name.toLowerCase().replace(/\s+/g, ''),
+                password: formData.password
+            });
+            localStorage.setItem('loginUsers', JSON.stringify(loginUsers));
+            
+            alert('Регистрация успешна! Данные сохранены.');
+            console.log('Зарегистрирован пользователь:', formData);
+            
+            // Сбрасываем форму
+            registrationForm.reset();
+            
+            // Перенаправляем через 2 секунды
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Ошибка регистрации:', error);
+            alert('Ошибка: ' + error.message);
+        } finally {
+            resetButton();
         }
+    });
 
-
-
-    async function saveToGoogleSheets(data) {
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${CONFIG.SHEET_NAME}!A:I:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS&key=${CONFIG.API_KEY}`;
-        
-        const values = [
-            [
-                data.id,
-                data.name,
-                data.email,
-                data.grade,
-                data.schoolBuilding,
-                data.age,
-                data.gender,
-                data.password,
-                data.timestamp,
-            ]
-        ];
-
-        const requestBody = {
-            values: values
-        };
-
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody)
-        });
-
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error?.message || 'Ошибка записи в таблицу');
+    function resetButton() {
+        if (registerButton) {
+            registerButton.disabled = false;
+            registerButton.textContent = 'Создать аккаунт';
         }
-
-        return true;
     }
 
+    function showError(input, message) {
+        clearError(input);
+        const error = document.createElement('div');
+        error.className = 'error-message';
+        error.style.color = 'red';
+        error.style.fontSize = '12px';
+        error.style.marginTop = '5px';
+        error.textContent = message;
+        input.parentNode.appendChild(error);
+    }
+
+    function clearError(input) {
+        const error = input.parentNode.querySelector('.error-message');
+        if (error) error.remove();
+    }
 });
